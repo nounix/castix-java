@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Raspberry Cast - iPUSH</title>
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1.0"/>
+	<script src="webjars/jquery/3.2.1/jquery.min.js"/>
+	<script src="webjars/firebase/2.2.1/firebase.js"/>
+	<script type="text/javascript" th:src="@{/js/httpRequest.js}"/>
+	<script type="text/javascript" th:src="@{/js/ctrlMouse.js}"/>
+	<script type="text/javascript" th:src="@{/js/uploadFile.js}"/>
+    <script type="text/javascript" th:src="@{/js/BandwidthHandler.js}"/>
+    <script type="text/javascript" th:src="@{/js/getScreenId.js}"/>
+    <script type="text/javascript" th:src="@{/js/screen.js}"/>
+</head>
+<style>
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+tr {
+	height: 60px;
+}
+
+td {
+	text-align: center;
+	width: 33.33%;
+	height: 60px;
+}
+
+input {
+	width: 90%;
+}
+
+canvas {
+	width: 90vw;
+}
+
+button {
+    width: 100%;
+    height: 100%;
+}
+</style>
+<body>
+	<table border="1">
+	  <tr>
+	    <th colspan="4">RPI-CAST</th>
+	  </tr>
+	  <tr>
+	  	<td><input id="usrInput" type="text"/></td>
+	  	<td><button onclick="usrInput.value = ''">Clear</button></td>
+	  	<td><button onclick="httpRequest('POST', 'play-video', $('#usrInput').val())">Play</button></td>
+  		<td><button onclick="httpRequest('POST', 'type-string', $('#usrInput').val())">Type</button></td>
+      </tr>
+      <tr>
+	    <td colspan="2"><input id="fileUpload" type="file" name="file" onchange="uploadFile()"/></td>
+	    <td><button id="share-screen" onclick="window.screen.share();">Share Screen</button></td>
+	    <td><button id="share-screen" onclick="window.screen.check();">Search Screen</button></td>
+	  </tr>
+	  <tr>
+	  	<td><button onclick="httpRequest('GET', 'close-win')">Close</button></td>
+	  	<td><button onclick="httpRequest('POST', 'press-key', 'XF86AudioRaiseVolume')">Vol+</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'XF86AudioLowerVolume')">Vol-</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'XF86AudioMute')">Mute</button></td>
+      </tr>
+      <tr>
+	  	<td><button onclick="httpRequest('POST', 'press-key', 'Return')">Return</button></td>
+	  	<td><button onclick="httpRequest('POST', 'press-key', 'space')">Space</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'BackSpace')">BackSpace</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'Escape')">Escape</button></td>
+      </tr>
+      <tr>
+      	<td><button onclick="httpRequest('POST', 'press-key', 'Up')">Up</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'Down')">Down</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'Left')">Left</button></td>
+	  	<td><button onclick="httpRequest('POST', 'press-key', 'Right')">Right</button></td>
+      </tr>
+      <tr>
+	  	<td><button onclick="httpRequest('POST', 'press-key', 'ctrl+c')">Copy</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'ctrl+v')">Paste</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-key', 'alt+f')">Full Screen</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-mouseKey', '3')">Mouse Right</button></td>
+      </tr>
+      <tr>
+      	<td><button onclick="httpRequest('POST', 'press-mouseKey', '4')">Scroll up</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-mouseKey', '5')">Scroll down</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-mouseKey', '8')">Back</button></td>
+	    <td><button onclick="httpRequest('POST', 'press-mouseKey', '9')">Forward</button></td>
+      </tr>
+	  <tr>
+	    <td colspan="4"><canvas id="mousePad"></canvas></td>
+	  </tr>
+	  <tr id="streamRow" style="display:none;">
+	    <td colspan="4" id="video"></td>
+	  </tr>
+	</table>
+</body>
+</html>
